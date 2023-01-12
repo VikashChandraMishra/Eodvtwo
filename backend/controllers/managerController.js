@@ -5,13 +5,12 @@ exports.approveEod = async (req, res) => {
     try {
         const userId = req.id;
         const eodId = req.params.id;
-
         const existingUser = await User.findById(userId);
 
         if (!existingUser) {
             return res.json({
                 success: false,
-                message: "user does not exist"
+                message: "User does not exist"
             });
 
         } else if (existingUser.designation == "employee") {

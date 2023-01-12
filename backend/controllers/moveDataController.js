@@ -130,14 +130,15 @@ exports.submitEOD = async (req, res) => {
 exports.fetchUserEods = async (req, res) => {
     try {
         const {
-            begin,
+            begin, 
             end
         } = req.body;
-        console.log(begin + " " + end)
-        const user = await User.findById(req.id);
 
-        // if()
-        const eods = await Report.find({ "empID": user.empID });
+        const beginDate = new Date(begin);
+        const endDate = new Date(end);
+
+        const user = await User.findById(req.id);
+        const eods = await Report.find({ "empID": user.empID, "date": {"$gte": beginDate, "$lt": endDate} });
 
         return res.json({
             success: true,

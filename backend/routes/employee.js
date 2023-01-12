@@ -9,14 +9,14 @@ const employeeController = require('../controllers/employeeController.js');
 
 const {
     fetchProfile,
-    fetchSubmissionStats
+    fetchApprovalStats
 } = employeeController;
 
 
 router.get('/fetch-profile', fetchUser, fetchProfile);
 
 
-router.get('/fetch-submission-status', fetchUser, fetchSubmissionStats);
+router.get('/fetch-approval-status', fetchUser, fetchApprovalStats);
 
 
 module.exports = router;

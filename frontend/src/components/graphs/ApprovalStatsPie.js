@@ -7,10 +7,11 @@ import {
     ChartSeriesItem,
     ChartSeriesLabels,
 } from "@progress/kendo-react-charts";
+import 'hammerjs';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const AdminPie = (props) => {
+const ApprovalStatsPie = (props) => {
 
     const navigate = useNavigate(null);
     const { text } = props;
@@ -25,22 +26,28 @@ const AdminPie = (props) => {
         );
     };
 
-    const labelContent = e => e.category;
+    // const labelContent = e => e.category;
 
     const COLORS = {
-        submitted: "green",
-        notSubmitted: "red",
+        approved: "green",
+        pending: "blue",
+        rejected: "red",
     };
 
     const [data, setData] = useState([{
-        status: "Submitted",
+        status: "Approved",
         value: 0,
-        color: COLORS.submitted,
+        color: COLORS.approved,
     },
     {
-        status: "Not Submitted",
+        status: "Rejected",
         value: 0,
-        color: COLORS.notSubmitted,
+        color: COLORS.rejected,
+    },
+    {
+        status: "Pending Assessment",
+        value: 0,
+        color: COLORS.rejected,
     }]);
 
     useEffect(() => {
@@ -49,7 +56,7 @@ const AdminPie = (props) => {
 
         const fetchData = async () => {
 
-            const response = await fetch('http://127.0.0.1:5000/api/admin/fetch-current-submission-status', {
+            const response = await fetch(`http://127.0.0.1:5000/api/employee/fetch-approval-status`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,14 +68,19 @@ const AdminPie = (props) => {
             if (json.success) {
 
                 let series = [{
-                    status: "Submitted",
-                    value: json.data.submissionPercentage,
-                    color: COLORS.submitted,
+                    status: "Approved",
+                    value: json.data.approvalPercentage,
+                    color: COLORS.approved,
                 },
                 {
-                    status: "Not Submitted",
-                    value: json.data.nonSubmissionPercentage,
-                    color: COLORS.notSubmitted,
+                    status: "Rejected",
+                    value: json.data.rejectionPercentage,
+                    color: COLORS.rejected,
+                },
+                {
+                    status: "Pending Assessment",
+                    value: (100 - (json.data.rejectionPercentage + json.data.approvalPercentage)),
+                    color: COLORS.pending,
                 }];
 
                 setData(series);
@@ -81,9 +93,9 @@ const AdminPie = (props) => {
 
     return (
         <div className="flex justify-center">
-            <Chart>
+            <Chart className="w-96 md:w-full">
                 <ChartTitle text={text} />
-                <ChartLegend visible={false} />
+                <ChartLegend visible={true} />
                 <ChartTooltip render={renderTooltip} />
                 <ChartSeries>
                     <ChartSeriesItem
@@ -95,7 +107,7 @@ const AdminPie = (props) => {
                         <ChartSeriesLabels
                             color="#fff"
                             background="none"
-                            content={labelContent}
+                        // content={labelContent}
                         />
                     </ChartSeriesItem>
                 </ChartSeries>
@@ -104,4 +116,4 @@ const AdminPie = (props) => {
     )
 }
 
-export default AdminPie;
+export default ApprovalStatsPie;

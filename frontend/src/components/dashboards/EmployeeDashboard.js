@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import SubmissionStatsPie from "../graphs/SubmissionStatsPie";
-import EmployeesTable from "../tables/EmployeesTable";
+import ApprovalStatsPie from "../graphs/ApprovalStatsPie";
+// import SubmissionStatsPie from "../graphs/SubmissionStatsPie";
 
-const AdminDashboard = () => {
+const EmployeeDashboard = () => {
 
     const navigate = useNavigate(null);
 
@@ -16,13 +16,13 @@ const AdminDashboard = () => {
     return (
         <div className="flex flex-col md:flex-row">
             <div className="w-full md:w-1/2">
-                <SubmissionStatsPie text="All Employees' EOD Submission Status" />
+                <ApprovalStatsPie />
             </div>
-            <div className="w-full md:w-1/2 p-2 md:p-6">
-                <EmployeesTable />
+            <div className="w-full md:w-1/2">
+                {/* <EmployeesTable /> */}
             </div>
         </div>
     )
 }
 
-export default AdminDashboard;
+export default EmployeeDashboard;

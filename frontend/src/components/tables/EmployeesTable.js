@@ -33,14 +33,12 @@ const EmployeeTable = () => {
     }, [])
 
     const getEODList = (e) => {
-
         let empID = e.target.innerText.split(" ")[0];
 
         if (localStorage.getItem('user') === 'admin')
-            navigate('/admin/eods-list', { state: { 'empID': empID } });
+            navigate('/admin/all-eods-list', { state: { 'empID': empID } });
         else if (localStorage.getItem('user') === 'manager')
-            navigate('/manager/eod-panel', { state: { 'empID': empID } })
-
+            navigate('/manager/eod-assessment-panel', { state: { 'empID': empID } });
     }
 
     const columns = useMemo(

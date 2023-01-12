@@ -1,6 +1,7 @@
+const Report = require("../models/Report");
 const User = require("../models/User");
 
-
+// Fetches profile data of employees
 exports.fetchProfile = async (req, res) => {
     try {
         const employee = await User.findById(req.id);
@@ -31,7 +32,7 @@ exports.fetchProfile = async (req, res) => {
 }
 
 
-exports.fetchSubmissionStats = async (req, res) => {
+exports.fetchApprovalStats = async (req, res) => {
     try {
         var approved = 0;
         var rejected = 0;
