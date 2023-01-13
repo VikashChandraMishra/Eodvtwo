@@ -130,21 +130,84 @@ exports.submitEOD = async (req, res) => {
 exports.fetchUserEods = async (req, res) => {
     try {
         const {
-            begin, 
+            begin,
+            end
+        } = req.body;
+
+        const beginDate = new Date(begin);
+        const endDate = new Date(end);
+        const user = await User.findById(req.id);
+        const eods = await Report.find({ "empID": user.empID, "date": { "$gte": beginDate, "$lt": endDate } });
+
+        return res.json({
+            success: true,
+            message: "eods' list successfully fetched",
+            eods: eods
+        });
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send("Internal Server Error!");
+    }
+}
+
+
+exports.fetchSubordinateEods = async (req, res) => {
+    try {
+        const {
+            begin,
             end
         } = req.body;
 
         const beginDate = new Date(begin);
         const endDate = new Date(end);
 
-        const user = await User.findById(req.id);
-        const eods = await Report.find({ "empID": user.empID, "date": {"$gte": beginDate, "$lt": endDate} });
+        const eods = await Report.find({ "empID": req.header('empID'), "date": { "$gte": beginDate, "$lt": endDate } });
 
         return res.json({
             success: true,
             message: "eods' list successfully fetched",
-            eods: eods,
-            user: user
+            eods: eods
+        });
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send("Internal Server Error!");
+    }
+}
+
+
+exports.fetchEmployeesByLocation = async (req, res) => {
+    try {
+        const { location } = req.body;
+        var employees;
+
+        if (req.id == ADMIN_USERNAME) {
+            employees = await User.find({ branch: location });
+
+        } else if (req.id != ADMIN_USERNAME) {
+            const user = await User.findById(req.id);
+
+            if (!user) {
+                return res.json({
+                    success: false,
+                    message: "user does not exist"
+                });
+
+            } else if (user.designation == 'employee') {
+                return res.json({
+                    success: false,
+                    message: "unauthorized action"
+                });
+
+            }
+            employees = await User.find({ reportingManager: user.name, branch: location });
+        }
+
+        return res.json({
+            success: true,
+            employees: employees,
+            message: "employees' list successfully fetched"
         });
 
     } catch (error) {

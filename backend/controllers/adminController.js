@@ -103,8 +103,8 @@ exports.fetchSubmissionStats = async (req, res) => {
 
         }
 
-        const submissionPercentage = (submitted * 100) / employees.length;
-        const nonSubmissionPercentage = (notSubmitted * 100) / employees.length;
+        const submissionPercentage = Math.round(((submitted * 100) / employees.length) * 100) / 100;
+        const nonSubmissionPercentage = Math.round(((notSubmitted * 100) / employees.length) * 100) / 100;
 
         return res.json({
             success: true,

@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SubmissionStatsPie from "../graphs/SubmissionStatsPie";
-import EmployeesTable from "../tables/EmployeesTable";
+import EmployeesList from "../tables/EmployeesList";
 
 const AdminDashboard = () => {
 
     const navigate = useNavigate(null);
 
     useEffect(() => {
-        if (!localStorage.getItem('authToken'))
+        if (localStorage.getItem('user') !== 'admin')
             navigate('/');
         // eslint-disable-next-line
     }, [])
@@ -19,7 +19,7 @@ const AdminDashboard = () => {
                 <SubmissionStatsPie text="All Employees' EOD Submission Status" />
             </div>
             <div className="w-full md:w-1/2 p-2 md:p-6">
-                <EmployeesTable />
+                <EmployeesList />
             </div>
         </div>
     )

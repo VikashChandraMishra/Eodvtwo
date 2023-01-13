@@ -31,8 +31,8 @@ const Home = () => {
     }
 
     return (
-        <div className="grid grid-cols-1 h-screen w-ful">
-            <div className="bg-gray-400 flex flex-col justify-center px-4">
+        <div className="grid grid-cols-1 w-ful">
+            <div className="flex flex-col justify-start">
                 <Formik
                     initialValues={{
                         username: '',

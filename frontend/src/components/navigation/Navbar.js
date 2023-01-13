@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import logo from "../../images/Insight.png"
 
 const Navbar = () => {
 
@@ -18,36 +19,36 @@ const Navbar = () => {
     }, [location])
 
     return (
-        <nav className="bg-slate-700 shadow-md w-full">
-            <div className="max-w-7xl mx-auto px-4">
-                <div className="flex justify-between">
+        <nav className="shadow-md w-full" style={{backgroundColor: '#a0c336'}}>
+            <div className="max-w-7xl px-4">
+                <div className="flex justify-between md:justify-start">
                     <div className="flex flex-col md:flex-row justify-between w-full">
                         <div>
-                            <Link to="/" className="flex items-center py-4 px-2">
-                                <span className="font-semibold text-slate-50 text-base md:text-3xl">GPlus</span>
+                            <Link to="/" className="flex flex-col items-center py-4">
+                                <img src={logo} alt="unavailable" className="w-32 h-12 md:w-40 md:h-14" />
                             </Link>
                         </div>
                         <div className="flex flex-col md:flex-row items-start md:items-center md:space-x-1" id="menu">
-                            <Link to="/" className="text-xs md:text-lg px-2 py-4 text-slate-50 font-semibold hover:text-green-500 transition duration-300">Home</Link>
+                            <Link to="/" className="text-xs md:text-lg px-2 py-4 text-slate-50 font-semibold hover:text-red-500 transition duration-300">Home</Link>
 
                             {
                                 localStorage.getItem('authToken') &&
-                                <Link to={`/${localStorage.getItem('user')}/dashboard`} className="text-xs md:text-lg px-2 py-4 text-slate-50 font-semibold hover:text-green-500 transition duration-300"
+                                <Link to={`/${localStorage.getItem('user')}/dashboard`} className="text-xs md:text-lg px-2 py-4 text-slate-50 font-semibold hover:text-red-500 transition duration-300"
                                 >Dashboard</Link>
                             }
                             {
                                 (localStorage.getItem('user') === 'manager' || localStorage.getItem('user') === 'employee') &&
-                                <Link to="/user/account" className="text-xs md:text-lg px-2 py-4 text-slate-50 font-semibold hover:text-green-500 transition duration-300"
+                                <Link to="/user/account" className="text-xs md:text-lg px-2 py-4 text-slate-50 font-semibold hover:text-red-500 transition duration-300"
                                 >Account</Link>
                             }
                             {
                                 localStorage.getItem('user') === 'admin' &&
-                                <Link to="/admin/register" className="text-xs md:text-lg px-2 py-4 text-slate-50 font-semibold hover:text-green-500 transition duration-300"
+                                <Link to="/admin/register" className="text-xs md:text-lg px-2 py-4 text-slate-50 font-semibold hover:text-red-500 transition duration-300"
                                 >Register</Link>
                             }
                             {
                                 localStorage.getItem('user') &&
-                                <Link to="/" className="text-xs md:text-lg px-2 py-4 text-slate-50 font-semibold hover:text-green-500 transition duration-300" onClick={logout} >Logout</Link>
+                                <Link to="/" className="text-xs md:text-lg px-2 py-4 text-slate-50 font-semibold hover:text-red-500 transition duration-300" onClick={logout} >Logout</Link>
                             }
                         </div>
                     </div>

@@ -13,6 +13,29 @@ const EODTable = () => {
     useEffect(() => {
         if (!localStorage.getItem('authToken'))
             navigate('/');
+
+        const begin = (new Date()).toISOString().slice(0, 10);
+        const currentDate = begin.split('-');
+        const end = currentDate[0] + '-' + currentDate[1] + '-' + (parseInt(currentDate[2]) + 1);
+
+        const fetchData = async () => {
+            const response = await fetch('http://127.0.0.1:5000/api/common/fetch-user-eods', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authToken': localStorage.getItem('authToken'),
+                },
+                body: JSON.stringify({ begin, end })
+            })
+
+            const json = await response.json();
+
+            if (json.success) {
+                setEods(json.eods);
+            } else alert("Cannot fetch eods' list at the moment!");
+        }
+
+        fetchData();
         // eslint-disable-next-line
     }, [])
 
@@ -55,7 +78,7 @@ const EODTable = () => {
                 }}
             >
                 <Form className="my-3 flex flex-row justify-around items-center text-xs md:text-base text-gray-600">
-                    <span className='text-xs md:text-lg md:mt-8 text-center'>Search</span>
+                    <span className='text-xs md:text-lg mt-6 md:mt-8 text-center'>Search</span>
 
                     <div className="flex flex-col items-center text-gray-400 py-2">
                         <DateInput
@@ -65,7 +88,7 @@ const EODTable = () => {
                             type="date"
                         />
                     </div>
-                    
+
                     <div className="flex flex-col items-center text-gray-400 py-2">
                         <DateInput
                             label="End Date: "
@@ -74,8 +97,8 @@ const EODTable = () => {
                             type="date"
                         />
                     </div>
-                    
-                    <button className="w-28 md:w-44 md:h-10 md:mt-8 bg-teal-500 shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 text-white font-semibold rounded-lg text-xs md:text-base" type="submit">Submit</button>
+
+                    <button className="w-28 md:w-44 h-6 md:h-10 mt-6 md:mt-8 bg-teal-500 shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 text-white font-semibold rounded-lg text-xs md:text-base" type="submit">Submit</button>
                 </Form>
             </Formik>
 

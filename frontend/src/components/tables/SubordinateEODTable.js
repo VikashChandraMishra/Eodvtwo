@@ -14,6 +14,31 @@ const EODTable = () => {
     useEffect(() => {
         if (!localStorage.getItem('authToken'))
             navigate('/');
+
+        const begin = (new Date()).toISOString().slice(0, 10);
+        const currentDate = begin.split('-');
+        const end = currentDate[0] + '-' + currentDate[1] + '-' + (parseInt(currentDate[2]) + 1);
+
+        const fetchData = async () => {
+            const response = await fetch('http://127.0.0.1:5000/api/common/fetch-subordinate-eods', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authToken': localStorage.getItem('authToken'),
+                    'empID': location.state.empID
+                },
+                body: JSON.stringify({ begin, end })
+            })
+
+            const json = await response.json();
+
+            if (json.success) {
+                setEods(json.eods);
+            } else alert("Cannot fetch eods' list at the moment!");
+        }
+
+        fetchData();
+
         // eslint-disable-next-line
     }, [])
 
